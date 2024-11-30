@@ -40,9 +40,47 @@ for (combinacion in combinaciones) {
 print(resultados)
 
 # Item b)
-# Como el único par correlacionado es dure - carb, creamos su modelo
-plot(carb, dure, xlab="carb", ylab="dure", main="Modelo de regresión lineal de dure-carb")
-dure_carb <- lm(dure~carb)
-abline(dure_carb,col="blue")
-summary(dure_carb)
+
+# Modelo carb-dure
+plot(carb, dure, xlab="carb", ylab="dure", main="Modelo de regresión lineal de carb-dure")
+carb_dure <- lm(dure~carb)
+abline(carb_dure,col="blue")
+summary(carb_dure)
+
+# Modelo reco-dure
+plot(reco, dure, xlab="reco", ylab="dure", main="Modelo de regresión lineal de reco-dure")
+reco_dure <- lm(dure~reco)
+abline(reco_dure, col="blue")
+summary(reco_dure)
+
+
+# Item c)
+# i)
+# Test para carb-dure
+# Linealidad
+plot(carb_dure, wich=1, main="Valores ajustados vs residuales")
+
+# Independencia de las observaciones
+plot(residuals(carb_dure), type="o", main="Grafico de los residuos vs tiempo")
+
+# Normalidad de los residuos
+qqnorm(residuals(carb_dure), main="holamundo")
+qqline(residuals(carb_dure), col="red")
+
+# Shapiro-Wilk
+shapiro.test(residuals(carb_dure))
+
+# Test para reco-dure
+# Linealidad
+plot(reco_dure, wich=1)
+
+# Independencia de las observaciones
+plot(residuals(reco_dure), type="o", main="Grafico de los residuos vs tiempo")
+
+# Normalidad de los residuos
+qqnorm(residuals(reco_dure))
+qqline(residuals(reco_dure), col="red")
+
+# Shapiro-Wilk
+shapiro.test(residuals(reco_dure))
 
