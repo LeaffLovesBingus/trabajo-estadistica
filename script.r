@@ -2,7 +2,7 @@
 datos <- read.csv("trabajo-estadistica/DatosGrupo_74.csv")
 
 # Guardamos separamos cada variable
-dure <- datos$dure  # Variable independiente
+dure <- datos$dure
 carb <- datos$carb
 ferr <- datos$ferr
 reco <- datos$reco
@@ -11,7 +11,7 @@ moli <- datos$moli
 # Item a)
 
 # Creamos una lista de variables
-variables <- list(dure = dure, carb = carb, ferr = ferr, moli = moli, reco = reco)
+variables <- list(carb = carb, ferr = ferr, moli = moli, reco = reco, dure = dure)
 
 # Creamos una matriz de pares de variables para analizar las combinaciones
 combinaciones <- combn(names(variables), 2, simplify = FALSE)
@@ -40,3 +40,9 @@ for (combinacion in combinaciones) {
 print(resultados)
 
 # Item b)
+# Como el único par correlacionado es dure - carb, creamos su modelo
+plot(carb, dure, xlab="carb", ylab="dure", main="Modelo de regresión lineal de dure-carb")
+dure_carb <- lm(dure~carb)
+abline(dure_carb,col="blue")
+summary(dure_carb)
+
