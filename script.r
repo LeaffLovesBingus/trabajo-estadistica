@@ -10,6 +10,14 @@ moli <- datos$moli
 
 # Item a)
 
+# Estudio de datos
+summary(datos)
+pairs(datos,lower.panel = NULL,col='brown')
+install.packages('corrplot')
+#library(corrplot)
+m_cor <- cor(datos,method='pearson')
+corrplot(m_cor,method='color',type='upper',tl.col='black',tl.srt=45,addCoef.col = 'black')
+
 # Creamos una lista de variables
 variables <- list(carb = carb, ferr = ferr, moli = moli, reco = reco, dure = dure)
 
@@ -42,45 +50,44 @@ print(resultados)
 # Item b)
 
 # Modelo carb-dure
-plot(carb, dure, xlab="carb", ylab="dure", main="Modelo de regresión lineal de carb-dure")
+plot(carb, dure, xlab="carb", ylab="dure")
 carb_dure <- lm(dure~carb)
-abline(carb_dure,col="blue")
+abline(carb_dure, col='red', lwd=2)
 summary(carb_dure)
 
 # Modelo reco-dure
-plot(reco, dure, xlab="reco", ylab="dure", main="Modelo de regresión lineal de reco-dure")
+plot(reco, dure, xlab="reco", ylab="dure")
 reco_dure <- lm(dure~reco)
-abline(reco_dure, col="blue")
+abline(reco_dure, col='red', lwd=2)
 summary(reco_dure)
 
 
 # Item c)
-# i)
-# Test para carb-dure
-# Linealidad
-plot(carb_dure, wich=1, main="Valores ajustados vs residuales")
 
-# Independencia de las observaciones
-plot(residuals(carb_dure), type="o", main="Grafico de los residuos vs tiempo")
+# Estudio de los modelos seleccionados
+plot(datos$carb,datos$dure)
+mean(m1$residuals)
+hist(m1$residuals,breaks=25)
+qqnorm(m1$residuals)
+qqline(m1$residuals)
+ks.test(m1$residuals,'pnorm',mean=mean(m1$residuals),sd=sd(m1$residuals))
+#install.packages('lmtest')
+library(lmtest)
+bptest(m1)
+dwtest(m1)
+plot(datos$reco,datos$dure)
+mean(m2$residuals)
+hist(m2$residuals,breaks=25)
+qqnorm(m2$residuals)
+qqline(m2$residuals)
+ks.test(m2$residuals,'pnorm',mean=mean(m2$residuals),sd=sd(m2$residuals))
+bptest(m2)
+dwtest(m2)
+summary(m1)
+summary(m2)
 
-# Normalidad de los residuos
-qqnorm(residuals(carb_dure), main="holamundo")
-qqline(residuals(carb_dure), col="red")
-
-# Shapiro-Wilk
-shapiro.test(residuals(carb_dure))
-
-# Test para reco-dure
-# Linealidad
-plot(reco_dure, wich=1)
-
-# Independencia de las observaciones
-plot(residuals(reco_dure), type="o", main="Grafico de los residuos vs tiempo")
-
-# Normalidad de los residuos
-qqnorm(residuals(reco_dure))
-qqline(residuals(reco_dure), col="red")
-
-# Shapiro-Wilk
-shapiro.test(residuals(reco_dure))
+# Item d)
+# Probando el mejor modelo
+confint(m1, level = 0.95)
+predict(m1, newdata = data.frame(carb=0.3), interval = "prediction", level = 0.95)
 
